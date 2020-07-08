@@ -12,6 +12,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewOutlineProvider
 import android.view.animation.OvershootInterpolator
+import androidx.annotation.FontRes
 import androidx.core.content.res.ResourcesCompat
 import com.ramotion.fluidslider.FluidSlider.Size.NORMAL
 import com.ramotion.fluidslider.FluidSlider.Size.SMALL
@@ -198,13 +199,16 @@ class FluidSlider @JvmOverloads constructor(
     var endTrackingListener: (() -> Unit)? = null
 
     /**
-     * Typeface used to render the slider's text
+     * Font resource used to render the slider's text
      */
-    var typeface: Typeface? = null
+    @FontRes
+    var fontId: Int? = null
     set(value) {
         field = value
-        paintText.typeface = value
-        invalidate()
+
+        paintText.typeface = value.takeIf { it != -1 }?.let {
+            ResourcesCompat.getFont(context, it)
+        }
     }
 
     @SuppressLint("NewApi")
@@ -319,9 +323,7 @@ class FluidSlider @JvmOverloads constructor(
                 val defaultBarHeight = if (a.getInteger(R.styleable.FluidSlider_size, 1) == 1) Size.NORMAL.value else Size.SMALL.value
                 barHeight = defaultBarHeight * density
 
-                typeface = a.getResourceId(R.styleable.FluidSlider_slider_font, -1).takeIf { it != -1 }?.let {
-                    ResourcesCompat.getFont(context, it)
-                }
+                fontId = a.getResourceId(R.styleable.FluidSlider_slider_font, -1)
             } finally {
                 a.recycle()
             }

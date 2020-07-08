@@ -12,6 +12,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewOutlineProvider
 import android.view.animation.OvershootInterpolator
+import androidx.core.content.res.ResourcesCompat
 import com.ramotion.fluidslider.FluidSlider.Size.NORMAL
 import com.ramotion.fluidslider.FluidSlider.Size.SMALL
 import kotlin.math.*
@@ -196,6 +197,16 @@ class FluidSlider @JvmOverloads constructor(
      */
     var endTrackingListener: (() -> Unit)? = null
 
+    /**
+     * Typeface used to render the slider's text
+     */
+    var typeface: Typeface? = null
+    set(value) {
+        field = value
+        paintText.typeface = value
+        invalidate()
+    }
+
     @SuppressLint("NewApi")
     inner class OutlineProvider : ViewOutlineProvider() {
         override fun getOutline(v: View?, outline: Outline?) {
@@ -307,6 +318,10 @@ class FluidSlider @JvmOverloads constructor(
 
                 val defaultBarHeight = if (a.getInteger(R.styleable.FluidSlider_size, 1) == 1) Size.NORMAL.value else Size.SMALL.value
                 barHeight = defaultBarHeight * density
+
+                typeface = a.getResourceId(R.styleable.FluidSlider_slider_font, -1).takeIf { it != -1 }?.let {
+                    ResourcesCompat.getFont(context, it)
+                }
             } finally {
                 a.recycle()
             }

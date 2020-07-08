@@ -202,7 +202,7 @@ class FluidSlider @JvmOverloads constructor(
      * Font resource used to render the slider's text
      */
     @FontRes
-    var fontId: Int? = null
+    var fontId: Int = -1
     set(value) {
         field = value
 
@@ -240,6 +240,7 @@ class FluidSlider @JvmOverloads constructor(
         val colorBarText: Int
         val colorLabelText: Int
         val duration: Long
+        val fontId: Int
 
         constructor(superState: Parcelable?,
                     position: Float,
@@ -250,7 +251,8 @@ class FluidSlider @JvmOverloads constructor(
                     colorBar: Int,
                     colorBarText: Int,
                     colorLabelText: Int,
-                    duration: Long) : super(superState) {
+                    duration: Long,
+                    fontId: Int) : super(superState) {
             this.position = position
             this.startText = startText
             this.endText = endText
@@ -260,6 +262,7 @@ class FluidSlider @JvmOverloads constructor(
             this.colorBarText = colorBarText
             this.colorLabelText = colorLabelText
             this.duration = duration
+            this.fontId = fontId
         }
 
         private constructor(parcel: Parcel) : super(parcel) {
@@ -272,6 +275,7 @@ class FluidSlider @JvmOverloads constructor(
             this.colorBarText = parcel.readInt()
             this.colorLabelText = parcel.readInt()
             this.duration = parcel.readLong()
+            this.fontId = parcel.readInt()
         }
 
         override fun writeToParcel(parcel: Parcel, i: Int) {
@@ -285,6 +289,7 @@ class FluidSlider @JvmOverloads constructor(
             parcel.writeInt(colorBarText)
             parcel.writeInt(colorLabelText)
             parcel.writeLong(duration)
+            parcel.writeInt(fontId)
         }
 
         override fun describeContents(): Int = 0
@@ -362,7 +367,7 @@ class FluidSlider @JvmOverloads constructor(
     override fun onSaveInstanceState(): Parcelable {
         return State(super.onSaveInstanceState(),
                 position, startText, endText, textSize,
-                colorBubble, colorBar, colorBarText, colorBubbleText, duration)
+                colorBubble, colorBar, colorBarText, colorBubbleText, duration, fontId)
     }
 
     override fun onRestoreInstanceState(state: Parcelable) {
@@ -377,6 +382,7 @@ class FluidSlider @JvmOverloads constructor(
             colorBarText = state.colorBarText
             colorBubbleText = state.colorLabelText
             duration = state.duration
+            fontId = state.fontId
         } else {
             super.onRestoreInstanceState(state)
         }

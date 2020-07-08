@@ -209,6 +209,7 @@ class FluidSlider @JvmOverloads constructor(
         paintText.typeface = value.takeIf { it != -1 }?.let {
             ResourcesCompat.getFont(context, it)
         }
+        invalidate()
     }
 
     @SuppressLint("NewApi")

@@ -121,6 +121,7 @@ Here are the attributes you can specify through XML or related setters:
 * `duration` - Duration of "bubble" rise in milliseconds.
 * `initial_position` - Initial positon of "bubble" in range form `0.0` to `1.0`.
 * `size` - Height of slider. Can be `small` (40dp) and `normal` (56dp).
+* `corner_radius` - Corner radius of slider (defaults to `2dp`)
 
 
 This library is a part of a <a href="https://github.com/Ramotion/android-ui-animation-components-and-libraries"><b>selection of our best UI open-source projects.</b></a>

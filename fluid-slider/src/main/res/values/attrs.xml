@@ -15,5 +15,6 @@
             <enum name="small" value="0"/>
             <enum name="normal" value="1"/>
         </attr>
+        <attr name="slider_font" format="reference" />
     </declare-styleable>
 </resources>

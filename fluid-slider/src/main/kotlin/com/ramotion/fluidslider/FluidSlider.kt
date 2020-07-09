@@ -43,7 +43,7 @@ class FluidSlider @JvmOverloads constructor(
     }
 
     private companion object {
-        const val BAR_CORNER_RADIUS = 8
+        const val BAR_CORNER_RADIUS = 2
         const val BAR_VERTICAL_OFFSET = 1.5f
         const val BAR_INNER_HORIZONTAL_OFFSET = 0
 
@@ -330,6 +330,8 @@ class FluidSlider @JvmOverloads constructor(
                 barHeight = defaultBarHeight * density
 
                 fontId = a.getResourceId(R.styleable.FluidSlider_slider_font, -1)
+
+                barCornerRadius = a.getDimension(R.styleable.FluidSlider_corner_radius, BAR_CORNER_RADIUS * density)
             } finally {
                 a.recycle()
             }
@@ -338,6 +340,7 @@ class FluidSlider @JvmOverloads constructor(
             colorBubble = COLOR_LABEL
             textSize = TEXT_SIZE * density
             barHeight = size.value * density
+            barCornerRadius = BAR_CORNER_RADIUS * density
         }
 
         desiredWidth = (barHeight * SLIDER_WIDTH).toInt()
@@ -352,7 +355,6 @@ class FluidSlider @JvmOverloads constructor(
         metaballRiseDistance = barHeight * METABALL_RISE_DISTANCE
 
         barVerticalOffset = barHeight * BAR_VERTICAL_OFFSET
-        barCornerRadius = BAR_CORNER_RADIUS * density
         barInnerOffset = BAR_INNER_HORIZONTAL_OFFSET * density
         textOffset = TEXT_OFFSET * density
     }

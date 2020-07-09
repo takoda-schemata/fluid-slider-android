@@ -16,5 +16,6 @@
             <enum name="normal" value="1"/>
         </attr>
         <attr name="slider_font" format="reference" />
+        <attr name="corner_radius" format="dimension" />
     </declare-styleable>
 </resources>

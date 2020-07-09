@@ -15,5 +15,6 @@
             <enum name="small" value="0"/>
             <enum name="normal" value="1"/>
         </attr>
+        <attr name="corner_radius" format="dimension" />
     </declare-styleable>
 </resources>

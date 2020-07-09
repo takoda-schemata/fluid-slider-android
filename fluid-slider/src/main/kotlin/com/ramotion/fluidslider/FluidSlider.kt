@@ -89,7 +89,6 @@ class FluidSlider @JvmOverloads constructor(
     private val textOffset: Float
 
     private val barVerticalOffset: Float
-    private val barCornerRadius: Float
     private val barInnerOffset: Float
 
     private val rectBar = RectF()
@@ -196,6 +195,11 @@ class FluidSlider @JvmOverloads constructor(
      */
     var endTrackingListener: (() -> Unit)? = null
 
+    /**
+     * The radius (in pixels) of the circle used to round this slider's corners
+     */
+    var barCornerRadius: Float
+
     @SuppressLint("NewApi")
     inner class OutlineProvider : ViewOutlineProvider() {
         override fun getOutline(v: View?, outline: Outline?) {
@@ -225,6 +229,7 @@ class FluidSlider @JvmOverloads constructor(
         val colorBarText: Int
         val colorLabelText: Int
         val duration: Long
+        val barCornerRadius: Float
 
         constructor(superState: Parcelable?,
                     position: Float,
@@ -235,7 +240,8 @@ class FluidSlider @JvmOverloads constructor(
                     colorBar: Int,
                     colorBarText: Int,
                     colorLabelText: Int,
-                    duration: Long) : super(superState) {
+                    duration: Long,
+                    barCornerRadius: Float) : super(superState) {
             this.position = position
             this.startText = startText
             this.endText = endText
@@ -245,6 +251,7 @@ class FluidSlider @JvmOverloads constructor(
             this.colorBarText = colorBarText
             this.colorLabelText = colorLabelText
             this.duration = duration
+            this.barCornerRadius = barCornerRadius
         }
 
         private constructor(parcel: Parcel) : super(parcel) {
@@ -257,6 +264,7 @@ class FluidSlider @JvmOverloads constructor(
             this.colorBarText = parcel.readInt()
             this.colorLabelText = parcel.readInt()
             this.duration = parcel.readLong()
+            this.barCornerRadius = parcel.readFloat()
         }
 
         override fun writeToParcel(parcel: Parcel, i: Int) {
@@ -270,6 +278,7 @@ class FluidSlider @JvmOverloads constructor(
             parcel.writeInt(colorBarText)
             parcel.writeInt(colorLabelText)
             parcel.writeLong(duration)
+            parcel.writeFloat(barCornerRadius)
         }
 
         override fun describeContents(): Int = 0
@@ -307,6 +316,8 @@ class FluidSlider @JvmOverloads constructor(
 
                 val defaultBarHeight = if (a.getInteger(R.styleable.FluidSlider_size, 1) == 1) Size.NORMAL.value else Size.SMALL.value
                 barHeight = defaultBarHeight * density
+
+                barCornerRadius = a.getDimension(R.styleable.FluidSlider_corner_radius, BAR_CORNER_RADIUS * density)
             } finally {
                 a.recycle()
             }
@@ -315,6 +326,7 @@ class FluidSlider @JvmOverloads constructor(
             colorBubble = COLOR_LABEL
             textSize = TEXT_SIZE * density
             barHeight = size.value * density
+            barCornerRadius = BAR_CORNER_RADIUS * density
         }
 
         desiredWidth = (barHeight * SLIDER_WIDTH).toInt()
@@ -329,7 +341,6 @@ class FluidSlider @JvmOverloads constructor(
         metaballRiseDistance = barHeight * METABALL_RISE_DISTANCE
 
         barVerticalOffset = barHeight * BAR_VERTICAL_OFFSET
-        barCornerRadius = BAR_CORNER_RADIUS * density
         barInnerOffset = BAR_INNER_HORIZONTAL_OFFSET * density
         textOffset = TEXT_OFFSET * density
     }
@@ -345,7 +356,7 @@ class FluidSlider @JvmOverloads constructor(
     override fun onSaveInstanceState(): Parcelable {
         return State(super.onSaveInstanceState(),
                 position, startText, endText, textSize,
-                colorBubble, colorBar, colorBarText, colorBubbleText, duration)
+                colorBubble, colorBar, colorBarText, colorBubbleText, duration, barCornerRadius)
     }
 
     override fun onRestoreInstanceState(state: Parcelable) {
@@ -360,6 +371,7 @@ class FluidSlider @JvmOverloads constructor(
             colorBarText = state.colorBarText
             colorBubbleText = state.colorLabelText
             duration = state.duration
+            barCornerRadius = state.barCornerRadius
         } else {
             super.onRestoreInstanceState(state)
         }
